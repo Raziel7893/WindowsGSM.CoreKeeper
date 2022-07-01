@@ -129,18 +129,8 @@ namespace WindowsGSM.Plugins
                 return null; // return null if fail to start
             }
         }
-
-
-// - Stop server function
-        public async Task Stop(Process p)
-        {
-            await Task.Run(() =>
-            {
-                 Functions.ServerConsole.SetMainWindow(p.MainWindowHandle);
-                 Functions.ServerConsole.SendWaitToMainWindow("^c");
-            });
-			 await Task.Delay(20000);
-        }
-
+	
+	   // - Stop server function
+	   public async Task Stop(Process p) => await Task.Run(() => { p.Kill(); }); // I believe Core Keeper don't have a proper way to stop the server so just kill it
     }
 }
