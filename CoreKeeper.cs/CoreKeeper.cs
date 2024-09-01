@@ -88,7 +88,7 @@ namespace WindowsGSM.Plugins
             };
 
             // Set up Redirect Input and Output to WindowsGSM Console if EmbedConsole is on
-            if (AllowsEmbedConsole)
+            if (serverData.EmbedConsole)
             {
                 p.StartInfo.CreateNoWindow = true;
                 p.StartInfo.RedirectStandardInput = true;
@@ -97,27 +97,17 @@ namespace WindowsGSM.Plugins
                 var serverConsole = new ServerConsole(serverData.ServerID);
                 p.OutputDataReceived += serverConsole.AddOutput;
                 p.ErrorDataReceived += serverConsole.AddOutput;
-
-                // Start Process
-                try
-                {
-                    p.Start();
-                }
-                catch (Exception e)
-                {
-                    Error = e.Message;
-                    return null; // return null if fail to start
-                }
-
-                p.BeginOutputReadLine();
-                p.BeginErrorReadLine();
-                return p;
             }
 
             // Start Process
             try
             {
                 p.Start();
+                if (serverData.EmbedConsole)
+                {
+                    p.BeginOutputReadLine();
+                    p.BeginErrorReadLine();
+                }
                 return p;
             }
             catch (Exception e)
