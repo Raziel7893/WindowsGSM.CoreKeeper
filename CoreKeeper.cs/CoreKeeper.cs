@@ -41,11 +41,11 @@ namespace WindowsGSM.Plugins
 
 
         // - Game server default values
-        public string Port = "9000"; // Default port
+        public string Port = "27016"; // Default port
         public string QueryPort = "9100"; // Default query port
         public string Defaultmap = "map"; // Default map name
         public string Maxplayers = "100"; // Default maxplayers
-        public string Additional = ""; // Additional server start parameter
+        public string Additional = "-datapath \"Saves\""; // Additional server start parameter
 
 
         // - Create a default cfg for the game server after installation
@@ -66,7 +66,11 @@ namespace WindowsGSM.Plugins
             }
 
             // Prepare start parameter
-            string param = $"-batchmode -logfile CoreKeeperServerLog.txt {serverData.ServerParam}";
+            string param = $"-batchmode -log" +
+                $" -logfile CoreKeeperServerLog.txt" +
+                $" -maxplayers {serverData.ServerMaxPlayer}" +
+                // $" -port {serverData.ServerPort}" +
+                $" {serverData.ServerParam}";
 
             // Prepare Process
             var p = new Process
