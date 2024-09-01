@@ -6,7 +6,11 @@
 https://store.steampowered.com/app/1621690/Core_Keeper/
 
 # Important
-%USERPROFILE%\AppData\LocalLow\Pugstorm\Core Keeper\DedicatedServer to Config Server, and get your gameId for Connect
+- Your Game Id is stored inside Server Files as GameID.txt (click Browse => Server Files in Wgsm)
+- To configure your server go to %USERPROFILE%\AppData\LocalLow\Pugstorm\Core Keeper\DedicatedServer and edit ServerConfig.json
+- If you want to import a world copy it
+  - from your client %USERPROFILE%\AppData\LocalLow\Pugstorm\Core Keeper\Steam\$YourSteamID\worlds\0.world.gzip
+  - to your server  %USERPROFILE%\AppData\LocalLow\Pugstorm\Core Keeper\DedicatedServer\worlds\0.world.gzip
 
 # Installation
 1. Download the latest release
