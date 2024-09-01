@@ -20,7 +20,7 @@ namespace WindowsGSM.Plugins
             name = "WindowsGSM.CoreKeeper", // WindowsGSM.XXXX
             author = "Geekbee",
             description = "WindowsGSM plugin for supporting CoreKeeper Dedicated Server",
-            version = "1.0",
+            version = "1.1",
             url = "https://github.com/GeekbeeGER/WindowsGSM.CoreKeeper", // Github repository link (Best practice)
             color = "#34c9ec" // Color Hex
         };
@@ -30,10 +30,7 @@ namespace WindowsGSM.Plugins
         public override string AppId => "1963720"; // Game server appId
 
         // - Standard Constructor and properties
-        public CoreKeeper(ServerConfig serverData) : base(serverData) => base.serverData = _serverData = serverData;
-        private readonly ServerConfig _serverData;
-        public string Error, Notice;
-
+        public CoreKeeper(ServerConfig serverData) : base(serverData) => base.serverData = serverData;
 
         // - Game server Fixed variables
         public override string StartPath => @"Launch.bat"; // Game server start path
@@ -60,20 +57,20 @@ namespace WindowsGSM.Plugins
         // - Start server function, return its Process to WindowsGSM
         public async Task<Process> Start()
         {
-			
-            string shipExePath = Functions.ServerPath.GetServersServerFiles(_serverData.ServerID, StartPath);
+
+            string shipExePath = Functions.ServerPath.GetServersServerFiles(serverData.ServerID, StartPath);
             if (!File.Exists(shipExePath))
             {
                 Error = $"{Path.GetFileName(shipExePath)} not found ({shipExePath})";
                 return null;
-            }			
-			
-		
+            }
+
+
 
             // Prepare start parameter
 
-			string param = $"-batchmode {_serverData.ServerParam}" + (!AllowsEmbedConsole ? " -log" : string.Empty);	
-	
+            string param = $"-batchmode {serverData.ServerParam}" + (!AllowsEmbedConsole ? " -log" : string.Empty);
+
 
 
             // Prepare Process
@@ -81,7 +78,7 @@ namespace WindowsGSM.Plugins
             {
                 StartInfo =
                 {
-                    WorkingDirectory = ServerPath.GetServersServerFiles(_serverData.ServerID),
+                    WorkingDirectory = ServerPath.GetServersServerFiles(serverData.ServerID),
                     FileName = shipExePath,
                     Arguments = param,
                     WindowStyle = ProcessWindowStyle.Minimized,
@@ -97,7 +94,7 @@ namespace WindowsGSM.Plugins
                 p.StartInfo.RedirectStandardInput = true;
                 p.StartInfo.RedirectStandardOutput = true;
                 p.StartInfo.RedirectStandardError = true;
-                var serverConsole = new ServerConsole(_serverData.ServerID);
+                var serverConsole = new ServerConsole(serverData.ServerID);
                 p.OutputDataReceived += serverConsole.AddOutput;
                 p.ErrorDataReceived += serverConsole.AddOutput;
 
@@ -129,8 +126,8 @@ namespace WindowsGSM.Plugins
                 return null; // return null if fail to start
             }
         }
-	
-	   // - Stop server function
-	   public async Task Stop(Process p) => await Task.Run(() => { p.Kill(); }); // I believe Core Keeper don't have a proper way to stop the server so just kill it
+
+        // - Stop server function
+        public async Task Stop(Process p) => await Task.Run(() => { p.Kill(); }); // I believe Core Keeper don't have a proper way to stop the server so just kill it
     }
 }
