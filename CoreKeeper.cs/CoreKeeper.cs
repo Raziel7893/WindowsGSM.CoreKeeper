@@ -33,7 +33,7 @@ namespace WindowsGSM.Plugins
         public CoreKeeper(ServerConfig serverData) : base(serverData) => base.serverData = serverData;
 
         // - Game server Fixed variables
-        public override string StartPath => @"Launch.bat"; // Game server start path
+        public override string StartPath => @"CoreKeeperServer.exe"; // Game server start path
         public string FullName = "CoreKeeper Dedicated Server"; // Game server FullName
         public bool AllowsEmbedConsole = true;  // Does this server support output redirect?
         public int PortIncrements = 10; // This tells WindowsGSM how many ports should skip after installation
@@ -65,13 +65,8 @@ namespace WindowsGSM.Plugins
                 return null;
             }
 
-
-
             // Prepare start parameter
-
-            string param = $"-batchmode {serverData.ServerParam}" + (!AllowsEmbedConsole ? " -log" : string.Empty);
-
-
+            string param = $"-batchmode -logfile CoreKeeperServerLog.txt {serverData.ServerParam}";
 
             // Prepare Process
             var p = new Process
