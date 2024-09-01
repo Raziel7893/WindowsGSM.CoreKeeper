@@ -35,7 +35,7 @@ namespace WindowsGSM.Plugins
         // - Game server Fixed variables
         public override string StartPath => @"CoreKeeperServer.exe"; // Game server start path
         public string FullName = "CoreKeeper Dedicated Server"; // Game server FullName
-        public bool AllowsEmbedConsole = true;  // Does this server support output redirect?
+        public bool AllowsEmbedConsole = false;  // Does this server support output redirect?
         public int PortIncrements = 10; // This tells WindowsGSM how many ports should skip after installation
         public object QueryMethod = new A2S(); // Query method should be use on current server type. Accepted value: null or new A2S() or new FIVEM() or new UT3()
 
@@ -83,26 +83,21 @@ namespace WindowsGSM.Plugins
             };
 
             // Set up Redirect Input and Output to WindowsGSM Console if EmbedConsole is on
-            if (serverData.EmbedConsole)
-            {
-                p.StartInfo.CreateNoWindow = true;
-                p.StartInfo.RedirectStandardInput = true;
-                p.StartInfo.RedirectStandardOutput = true;
-                p.StartInfo.RedirectStandardError = true;
-                var serverConsole = new ServerConsole(serverData.ServerID);
-                p.OutputDataReceived += serverConsole.AddOutput;
-                p.ErrorDataReceived += serverConsole.AddOutput;
-            }
+            p.StartInfo.CreateNoWindow = true;
+            p.StartInfo.RedirectStandardInput = true;
+            p.StartInfo.RedirectStandardOutput = true;
+            p.StartInfo.RedirectStandardError = true;
+            var serverConsole = new ServerConsole(serverData.ServerID);
+            p.OutputDataReceived += serverConsole.AddOutput;
+            p.ErrorDataReceived += serverConsole.AddOutput;
+
 
             // Start Process
             try
             {
                 p.Start();
-                if (serverData.EmbedConsole)
-                {
-                    p.BeginOutputReadLine();
-                    p.BeginErrorReadLine();
-                }
+                p.BeginOutputReadLine();
+                p.BeginErrorReadLine();
                 return p;
             }
             catch (Exception e)
