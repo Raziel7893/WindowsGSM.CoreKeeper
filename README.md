@@ -19,3 +19,11 @@ https://store.steampowered.com/app/1621690/Core_Keeper/
 1. Download the latest release
 2. Move CoreKeeper.cs folder to plugins folder
 3. Click [RELOAD PLUGINS] button or restart WindowsGSM
+
+### Support
+[WGSM](https://discord.com/channels/590590698907107340/645730252672335893)
+
+### Give Love!
+[Buy me a coffee](https://ko-fi.com/raziel7893)
+
+[Paypal](https://paypal.me/raziel7893)
